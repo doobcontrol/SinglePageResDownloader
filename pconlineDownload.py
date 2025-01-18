@@ -1,3 +1,4 @@
+from http.client import IncompleteRead
 import requests
 import os
 import logging
@@ -6,6 +7,31 @@ import logging
 class WrongUrlException(Exception):
     "Raised when the nrl not start with https://dp.pconline.com.cn/photo/"
     pass
+
+def downloadOneFile(fileUrl, saveFileName):
+    tryTimes = 0
+    while True:
+        try: 
+            r = requests.get(fileUrl) 
+            r.raise_for_status() 
+            with open(saveFileName, 'wb') as file:
+                file.write(r.content)
+                
+            return True
+        except IncompleteRead as errrt: 
+            if tryTimes < 9:
+                tryTimes += 1
+                print("network interruption, retry")
+            else:
+                print("network interruption 10 times, I'm give up")
+                return False
+        except Exception as otherErr:
+            if r.status_code == 424:
+                print('Failed to download file')
+            else:
+                print(str(otherErr))
+                print(r)
+            return False
 
 # download method
 def downloadPics(pUrl):
@@ -65,23 +91,16 @@ def downloadPics(pUrl):
             nStrA = sStrA[len(sStrA) - 1].split('/')
             nStr = nStrA[len(nStrA) - 1].replace("_mthumb", "")
             
-            response = requests.get(sStr)
-            
-            file_Path = f'{pkgDir}/{nStr}.jpg'
-            
-            if response.status_code == 200:
-                with open(file_Path, 'wb') as file:
-                    file.write(response.content)
-                    print(f'File {nStr} downloaded successfully')
-                    dCount += 1
-            else:
-                print('Failed to download file')
+            dSucceed = downloadOneFile(sStr, f'{pkgDir}/{nStr}.jpg')
+            if dSucceed:
+                print(f'File {nStr} downloaded successfully')
+                dCount += 1
                         
         print(f'{dCount}/{len(fStrA) - 1} files downloaded')
         
     else:
         print(r)
-
+		    
 # Configure the logger
 logging.basicConfig(filename='pconlineDownload.log',
                     encoding='utf-8',
