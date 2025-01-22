@@ -18,19 +18,22 @@ def downloadOneFile(fileUrl, saveFileName):
                 file.write(r.content)
                 
             return True
-        except IncompleteRead as errrt: 
+        except IncompleteRead as e: 
             if tryTimes < 9:
                 tryTimes += 1
                 print("network interruption, retry")
             else:
                 print("network interruption 10 times, I'm give up")
                 return False
-        except Exception as otherErr:
+        except requests.HTTPError as e:
             if r.status_code == 424:
                 print('Failed to download file')
             else:
-                print(str(otherErr))
+                print(str(e))
                 print(r)
+            return False
+        except Exception as e:
+            print(str(e))
             return False
 
 # download method
