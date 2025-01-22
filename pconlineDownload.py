@@ -122,6 +122,9 @@ while True :
         print(str(e))
     except Exception as e:
         print(str(e))
-        logger.error(str(e))
+        logger.error(
+            str(e),
+            exc_info=True
+        )
         
 logger.info('The end.\n')
