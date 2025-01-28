@@ -61,24 +61,22 @@ def downloadPics(pUrl):
 
         
         # use page title for directory name
+        illegalChrs = ['#', '%', '&', '{', '}', '\\', '<', '>', '*', '?', \
+                       '/', '$', '!', '\'', '"', ':', '@', '+', '`', '|', '=']
         Jcamerist=dStr.split('<i id="Jcamerist" class="camerist"><a href="')[1].split('</a>')[0]
         Jcamerist=Jcamerist.split('"  target="_blank">')[1].replace("&nbsp;", "")
-        pkgDir = (rootDir + Jcamerist
-                  .replace('?', '')
-                 .replace('/', '')
-                 .replace('*', '')
-                 .replace('\\', '')
-                 .replace('&amp;x', ''))
+        for iChr in illegalChrs:
+            Jcamerist = Jcamerist.replace(iChr, '')
+        pkgDir = (rootDir + Jcamerist)
         if not os.path.isdir(pkgDir):
             os.mkdir(pkgDir)
             print(f'directory {pkgDir} created')
 
-        pkgDir = (pkgDir + "/" + dStr.split('<meta itemprop="name" content="【')[1].split('】" />')[0].replace("&nbsp;", "")
-                 .replace('?', '')
-                 .replace('/', '')
-                 .replace('*', '')
-                 .replace('\\', '')
-                 .replace('&amp;', ''))         
+        pGroupName = dStr.split('<meta itemprop="name" content="【')[1]\
+                     .split('】" />')[0].replace("&nbsp;", "")
+        for iChr in illegalChrs:
+            pGroupName = pGroupName.replace(iChr, '')
+        pkgDir = (pkgDir + "/" + pGroupName)         
         if not os.path.isdir(pkgDir):
             os.mkdir(pkgDir)
             print(f'directory {pkgDir} created')
