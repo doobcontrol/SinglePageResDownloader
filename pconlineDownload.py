@@ -1,11 +1,32 @@
 from http.client import IncompleteRead
 import requests
+import sys
 import os
 import logging
+import gettext
+
+if sys.platform.startswith('win'):
+    if os.getenv('LANG') is None:
+        import ctypes
+        import locale
+        windll = ctypes.windll.kernel32
+        os.environ['LANG'] = locale.windows_locale[windll.GetUserDefaultUILanguage()]
+
+# check if is running in a PyInstaller bundle
+locale_dir = './locales'
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    locale_dir = './_internal/locales'
+    
+# Set up translation
+appname = 'pconlineDownload'
+# Set up Gettext
+en_i18n = gettext.translation(appname, locale_dir, fallback=True)
+# Create the "magic" function
+en_i18n.install()
 
 # define Python user-defined exceptions
 class WrongUrlException(Exception):
-    "Raised when the nrl not start with https://dp.pconline.com.cn/photo/"
+    _("Raised when the nrl not start with https://dp.pconline.com.cn/photo/")
     pass
 
 def downloadOneFile(fileUrl, saveFileName):
@@ -21,13 +42,13 @@ def downloadOneFile(fileUrl, saveFileName):
         except IncompleteRead as e: 
             if tryTimes < 9:
                 tryTimes += 1
-                print("network interruption, retry")
+                print(_("network interruption, retry"))
             else:
-                print("network interruption 10 times, I'm give up")
+                print(_("network interruption 10 times, I'm give up"))
                 return False
         except requests.HTTPError as e:
             if r.status_code == 424:
-                print('Failed to download file')
+                print(_('Failed to download file'))
             else:
                 print(str(e))
                 print(r)
@@ -42,7 +63,7 @@ def downloadPics(pUrl):
     
     # handle the url
     if not pUrl.startswith("https://dp.pconline.com.cn/photo/"):
-        raise WrongUrlException('Url must start with: https://dp.pconline.com.cn/photo/')
+        raise WrongUrlException(_('Url must start with: https://dp.pconline.com.cn/photo/'))
     # check Existence of
     if not 'list_' in pUrl:
         pUrl = pUrl[:33] + 'list_' + pUrl[33:]
@@ -61,25 +82,27 @@ def downloadPics(pUrl):
 
         
         # use page title for directory name
+        dirMsg = _('directory {pkgDir} created')
         illegalChrs = ['#', '%', '&', '{', '}', '\\', '<', '>', '*', '?', \
                        '/', '$', '!', '\'', '"', ':', '@', '+', '`', '|', '=']
-        Jcamerist=dStr.split('<i id="Jcamerist" class="camerist"><a href="')[1].split('</a>')[0]
+        Jcamerist=dStr.split('<i id="Jcamerist" class="camerist"><a href="')[1]\
+                   .split('</a>')[0]
         Jcamerist=Jcamerist.split('"  target="_blank">')[1].replace("&nbsp;", "")
         for iChr in illegalChrs:
             Jcamerist = Jcamerist.replace(iChr, '')
         pkgDir = (rootDir + Jcamerist)
         if not os.path.isdir(pkgDir):
             os.mkdir(pkgDir)
-            print(f'directory {pkgDir} created')
+            print(dirMsg.format(pkgDir = pkgDir))
 
         pGroupName = dStr.split('<meta itemprop="name" content="【')[1]\
                      .split('】" />')[0].replace("&nbsp;", "")
         for iChr in illegalChrs:
             pGroupName = pGroupName.replace(iChr, '')
-        pkgDir = (pkgDir + "/" + pGroupName)         
+        pkgDir = (pkgDir + "/" + pGroupName)
         if not os.path.isdir(pkgDir):
             os.mkdir(pkgDir)
-            print(f'directory {pkgDir} created')
+            print(dirMsg.format(pkgDir = pkgDir))
         
         dCount = 0
         for fStr in fStrA :
@@ -94,10 +117,11 @@ def downloadPics(pUrl):
             
             dSucceed = downloadOneFile(sStr, f'{pkgDir}/{nStr}.jpg')
             if dSucceed:
-                print(f'File {nStr} downloaded successfully')
+                print(_('File {nStr} downloaded successfully').format(nStr = nStr))
                 dCount += 1
                         
-        print(f'{dCount}/{len(fStrA) - 1} files downloaded')
+        print(_('{dCount}/{dTotalCount} files downloaded')\
+              .format(dCount = dCount, dTotalCount = len(fStrA) - 1))
         
     else:
         print(r)
@@ -110,10 +134,10 @@ logging.basicConfig(filename='pconlineDownload.log',
 
 # Create a logger object
 logger = logging.getLogger(__name__)
-logger.info('Start downloading cycle ...')
+logger.info(_('Start downloading cycle ...'))
 
 while True :
-    pUrl = input('input url(or q or x to exit): ')
+    pUrl = input(_('input url(or q or x to exit): '))
     if pUrl == 'q' or pUrl == 'x':
         break;
     
@@ -128,4 +152,4 @@ while True :
             exc_info=True
         )
         
-logger.info('The end.\n')
+logger.info(_('The end.\n'))
