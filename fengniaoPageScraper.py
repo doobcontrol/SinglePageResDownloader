@@ -17,8 +17,10 @@ class fengniaoPgScraper(pgScraper):
         return htmlContent.decode()
 
     # override
-    def getPicList(self, htmlContent):        
-        jStr = htmlContent.split("eval('('+'")[1].split("'+')');")[0]
+    def getPicList(self, htmlContent):
+        start= "eval('('+'"
+        end = "'+')');"
+        jStr = self.find_between(htmlContent, start, end)   
         json_object = json.loads(jStr)
 
         picList = {}
@@ -32,15 +34,18 @@ class fengniaoPgScraper(pgScraper):
         # use page title for directory name
         dirMsg = _('directory {pkgDir} created')
 
-        mName = htmlContent.split('title="" class="name" target="_blank">')[1].split('</a>')[0]
+        start= 'title="" class="name" target="_blank">'
+        end = '</a>'
+        mName = self.find_between(htmlContent, start, end)   
         mName = self.washPathStr(mName)
         pkgDir = (self.rootDir + mName)
         if not os.path.isdir(pkgDir):
             os.mkdir(pkgDir)
             print(dirMsg.format(pkgDir = pkgDir))
-
-        pGroupName = htmlContent.split("<title>")[1].split("</title>")[0]
-
+            
+        start= "<title>"
+        end = "</title>"
+        pGroupName = self.find_between(htmlContent, start, end)
         pGroupName = self.washPathStr(pGroupName)
         pkgDir = (pkgDir + "/" + pGroupName)
         if not os.path.isdir(pkgDir):

@@ -4,7 +4,7 @@ import os
 class pconlinePgScraper(pgScraper):
     """pconlinePgScraper class"""
 
-    # for override
+    # override
     def urlPreHandle(self, inUrl):
         pUrl = inUrl
         if not pUrl.startswith("https://dp.pconline.com.cn/photo/"):
@@ -20,37 +20,41 @@ class pconlinePgScraper(pgScraper):
 
     # override
     def getPicList(self, htmlContent):
-        fStrA = htmlContent.split('" onload="bigPicLoaded(this);"')
         picList = {}
+        start= 'src="//'
+        end = '" onload="bigPicLoaded(this);"'
+        fStrA = self.find_allBetween(htmlContent, start, end)
         for fStr in fStrA :
-            if fStr.endswith("</html>"):
-                break;
-            
-            sStrA = fStr.split('src="//')
-            sStr= "https://" + sStrA[len(sStrA) - 1].replace("_mthumb", "")
+            sStr= "https://" + fStr.replace("_mthumb", "")
 
-            nStrA = sStrA[len(sStrA) - 1].split('/')
+            nStrA = fStr.split('/')
             nStr = nStrA[len(nStrA) - 1].replace("_mthumb", "")
 
             picList[sStr] = nStr
         
         return picList
 
-    # for override
+    # override
     def createSavePath(self, htmlContent):
         # use page title for directory name
         dirMsg = _('directory {pkgDir} created')
-        Jcamerist = htmlContent.split('<i id="Jcamerist" class="camerist"><a href="')[1]\
-                   .split('</a>')[0]
-        Jcamerist = Jcamerist.split('"  target="_blank">')[1].replace("&nbsp;", "")
-        Jcamerist = self.washPathStr(Jcamerist)
-        pkgDir = (self.rootDir + Jcamerist)
+
+        start= '<i id="Jcamerist" class="camerist"><a href="'
+        end = '</a>'
+        mName = self.find_between(htmlContent, start, end)
+        start= '  target="_blank">'
+        end = ''
+        mName = self.find_between(mName, start, end)        
+        mName = self.washPathStr(mName)
+        pkgDir = (self.rootDir + mName)
         if not os.path.isdir(pkgDir):
             os.mkdir(pkgDir)
             print(dirMsg.format(pkgDir = pkgDir))
 
-        pGroupName = htmlContent.split('<meta itemprop="name" content="【')[1]\
-                     .split('】" />')[0].replace("&nbsp;", "")
+
+        start= '<meta itemprop="name" content="【'
+        end = '】" />'
+        pGroupName = self.find_between(htmlContent, start, end)
         pGroupName = self.washPathStr(pGroupName)
         pkgDir = (pkgDir + "/" + pGroupName)
         if not os.path.isdir(pkgDir):
