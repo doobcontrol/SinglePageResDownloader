@@ -89,7 +89,7 @@ class pgScraper:
                     dCount += 1
                             
             print(_('{dCount}/{dTotalCount} files downloaded')\
-                  .format(dCount = dCount, dTotalCount = len(picList) - 1))
+                  .format(dCount = dCount, dTotalCount = len(picList)))
             
         else:
             print(r)
