@@ -10,11 +10,16 @@ class pgScraper:
     """pageScraper class"""
 
     def __init__(self):
-        self.rootDir = '' # 
+        self.rootDir = ''
+        self.illegalChrs = ['#', '%', '&', '{', '}', '\\', '<', '>', '*', '?', \
+                       '/', '$', '!', '\'', '"', ':', '@', '+', '`', '|', '=']
 
-    # temp??
-    # def _(self, str):
-        # return str
+
+    def washPathStr(self, pStr):
+        rStr = pStr
+        for iChr in self.illegalChrs:
+            rStr = rStr.replace(iChr, '')
+        return rStr
         
     def downloadOneFile(self, fileUrl, saveFileName):
         tryTimes = 0

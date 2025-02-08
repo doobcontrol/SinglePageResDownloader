@@ -31,12 +31,9 @@ class fengniaoPgScraper(pgScraper):
     def createSavePath(self, htmlContent):
         # use page title for directory name
         dirMsg = _('directory {pkgDir} created')
-        illegalChrs = ['#', '%', '&', '{', '}', '\\', '<', '>', '*', '?', \
-                       '/', '$', '!', '\'', '"', ':', '@', '+', '`', '|', '=']
 
         mName = htmlContent.split('title="" class="name" target="_blank">')[1].split('</a>')[0]
-        for iChr in illegalChrs:
-            mName = mName.replace(iChr, '')
+        mName = self.washPathStr(mName)
         pkgDir = (self.rootDir + mName)
         if not os.path.isdir(pkgDir):
             os.mkdir(pkgDir)
@@ -44,8 +41,7 @@ class fengniaoPgScraper(pgScraper):
 
         pGroupName = htmlContent.split("<title>")[1].split("</title>")[0]
 
-        for iChr in illegalChrs:
-            pGroupName = pGroupName.replace(iChr, '')
+        pGroupName = self.washPathStr(pGroupName)
         pkgDir = (pkgDir + "/" + pGroupName)
         if not os.path.isdir(pkgDir):
             os.mkdir(pkgDir)

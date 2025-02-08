@@ -40,13 +40,10 @@ class pconlinePgScraper(pgScraper):
     def createSavePath(self, htmlContent):
         # use page title for directory name
         dirMsg = _('directory {pkgDir} created')
-        illegalChrs = ['#', '%', '&', '{', '}', '\\', '<', '>', '*', '?', \
-                       '/', '$', '!', '\'', '"', ':', '@', '+', '`', '|', '=']
         Jcamerist = htmlContent.split('<i id="Jcamerist" class="camerist"><a href="')[1]\
                    .split('</a>')[0]
         Jcamerist = Jcamerist.split('"  target="_blank">')[1].replace("&nbsp;", "")
-        for iChr in illegalChrs:
-            Jcamerist = Jcamerist.replace(iChr, '')
+        Jcamerist = self.washPathStr(Jcamerist)
         pkgDir = (self.rootDir + Jcamerist)
         if not os.path.isdir(pkgDir):
             os.mkdir(pkgDir)
@@ -54,8 +51,7 @@ class pconlinePgScraper(pgScraper):
 
         pGroupName = htmlContent.split('<meta itemprop="name" content="【')[1]\
                      .split('】" />')[0].replace("&nbsp;", "")
-        for iChr in illegalChrs:
-            pGroupName = pGroupName.replace(iChr, '')
+        pGroupName = self.washPathStr(pGroupName)
         pkgDir = (pkgDir + "/" + pGroupName)
         if not os.path.isdir(pkgDir):
             os.mkdir(pkgDir)
