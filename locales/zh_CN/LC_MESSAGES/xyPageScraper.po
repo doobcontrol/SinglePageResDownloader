@@ -17,49 +17,61 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: pconlineDownload.py:38
+#: c:\python\repos\singlepageresdownloader\pagescraper.py:38
 msgid "Failed to download file"
 msgstr "下载文件失败"
 
-#: pconlineDownload.py:108
+#: c:\python\repos\singlepageresdownloader\pagescraper.py:81
 #, python-brace-format
-msgid "File {nStr} downloaded successfully"
-msgstr "文件 {nStr} 下载成功"
+msgid "File {fileName} downloaded successfully"
+msgstr "文件 {fileName} 下载成功"
 
-#: pconlineDownload.py:16
-msgid "Raised when the nrl not start with https://dp.pconline.com.cn/photo/"
-msgstr "输入的地址不以 https://dp.pconline.com.cn/photo/ 开头时抛出此异常"
-
-#: pconlineDownload.py:121
+#: c:\python\repos\singlepageresdownloader\xypagescraper.py:34
 msgid "Start downloading cycle ..."
 msgstr "开始下载循环 ……"
 
-#: pconlineDownload.py:139
+#: c:\python\repos\singlepageresdownloader\xypagescraper.py:70
 msgid "The end.\n"
 msgstr "程序结束\n"
 
-#: pconlineDownload.py:53
+#: c:\python\repos\singlepageresdownloader\pconlinepagescraper.py:11
 msgid "Url must start with: https://dp.pconline.com.cn/photo/"
 msgstr "地址开头必须是： https://dp.pconline.com.cn/photo/"
 
-#: pconlineDownload.py:73
+#: c:\python\repos\singlepageresdownloader\xypagescraper.py:38
+msgid "[0] pconline"
+msgstr "[0] 太平洋摄影部落(dp.pconline.com.cn)"
+
+#: c:\python\repos\singlepageresdownloader\xypagescraper.py:39
+msgid "[1] fengniao"
+msgstr "[1] 蜂鸟网(www.fengniao.com)"
+
+#: c:\python\repos\singlepageresdownloader\pconlinepagescraper.py:42
 #, python-brace-format
 msgid "directory {pkgDir} created"
 msgstr "新建目录： {pkgDir}"
 
-#: pconlineDownload.py:124
+#: c:\python\repos\singlepageresdownloader\xypagescraper.py:68
+msgid "error input. Please retry"
+msgstr "输入错误，请重试"
+
+#: c:\python\repos\singlepageresdownloader\xypagescraper.py:52
 msgid "input url(or q or x to exit): "
 msgstr "输入下载地址（q 或 x 退出程序）："
 
-#: pconlineDownload.py:34
+#: c:\python\repos\singlepageresdownloader\pagescraper.py:34
 msgid "network interruption 10 times, I'm give up"
 msgstr "网络失败10次，放弃尝试"
 
-#: pconlineDownload.py:32
+#: c:\python\repos\singlepageresdownloader\pagescraper.py:32
 msgid "network interruption, retry"
 msgstr "网络失败，重试"
 
-#: pconlineDownload.py:111
+#: c:\python\repos\singlepageresdownloader\xypagescraper.py:40
+msgid "select resource site(or q or x to exit): "
+msgstr "选择资源网站（q 或 x 退出程序）："
+
+#: c:\python\repos\singlepageresdownloader\pagescraper.py:85
 #, python-brace-format
 msgid "{dCount}/{dTotalCount} files downloaded"
 msgstr "下载结果：{dCount}/{dTotalCount}"

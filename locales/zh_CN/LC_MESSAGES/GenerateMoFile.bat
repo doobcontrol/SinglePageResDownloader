@@ -1,3 +1,3 @@
-msgfmt -o pconlineDownload.mo pconlineDownload.po 
+msgfmt -o xyPageScraper.mo xyPageScraper.po 
 
 PAUSE
