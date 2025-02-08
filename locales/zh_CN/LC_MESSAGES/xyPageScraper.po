@@ -34,6 +34,10 @@ msgstr "开始下载循环 ……"
 msgid "The end.\n"
 msgstr "程序结束\n"
 
+#: c:\python\repos\singlepageresdownloader\fengniaopagescraper.py:12
+msgid "Url must start with: https://bbs.fengniao.com/forum/pic/"
+msgstr "地址开头必须是： https://bbs.fengniao.com/forum/pic/"
+
 #: c:\python\repos\singlepageresdownloader\pconlinepagescraper.py:11
 msgid "Url must start with: https://dp.pconline.com.cn/photo/"
 msgstr "地址开头必须是： https://dp.pconline.com.cn/photo/"

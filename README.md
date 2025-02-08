@@ -10,4 +10,5 @@ distribute and run:
 3, on target pc. run xyPageScraperExeMake.exe, then paste the picture group page url(such as: https://dp.pconline.com.cn/photo/list_3457431.html) when ask and press return  
   
 target web site:  
-https://dp.pconline.com.cn/  
+https://dp.pconline.com.cn/   
+https://bbs.fengniao.com/  

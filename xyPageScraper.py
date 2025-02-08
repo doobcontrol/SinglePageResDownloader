@@ -46,8 +46,9 @@ while True :
             from pconlinePageScraper import pconlinePgScraper
             scraper = pconlinePgScraper()
         elif pUrl == '1':
-            pass
-        
+            from fengniaoPageScraper import fengniaoPgScraper
+            scraper = fengniaoPgScraper()
+
         while True :
             pUrl = input(_('input url(or q or x to exit): '))
             if pUrl == 'q' or pUrl == 'x':
