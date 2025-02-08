@@ -12,7 +12,8 @@ class pgScraper:
     def __init__(self):
         self.rootDir = ''
         self.illegalChrs = ['#', '%', '&', '{', '}', '\\', '<', '>', '*', '?', \
-                       '/', '$', '!', '\'', '"', ':', '@', '+', '`', '|', '=']
+                       '/', '$', '!', '\'', '"', ':', '@', '+', '`', '|', '=', \
+                       'amp;']
 
 
     def washPathStr(self, pStr):
