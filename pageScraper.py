@@ -3,8 +3,15 @@ import requests
 
 # define Python user-defined exceptions
 class WrongUrlException(Exception):
-    # _("Raised when the nrl not start with ...")
+    """Raised when the url not start with ..."""
     pass
+
+class ItemsNotFoundError(Exception):
+    """Raised when some items are not found in the page HTML string"""
+    def __init__(self):
+        self.message = _(
+            "Some items are not found in the page HTML string. Please try the url again"
+                         )
 
 class pgScraper:
     """pageScraper class"""

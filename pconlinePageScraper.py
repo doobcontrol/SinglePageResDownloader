@@ -1,4 +1,4 @@
-from pageScraper import pgScraper, WrongUrlException
+from pageScraper import pgScraper, WrongUrlException, ItemsNotFoundError
 import os
 
 class pconlinePgScraper(pgScraper):
@@ -24,6 +24,8 @@ class pconlinePgScraper(pgScraper):
         start= 'src="//'
         end = '" onload="bigPicLoaded(this);"'
         fStrA = self.find_allBetween(htmlContent, start, end)
+        if len(fStrA) == 0 :
+            raise ItemsNotFoundError()
         for fStr in fStrA :
             sStr= "https://" + fStr.replace("_mthumb", "")
 
@@ -44,7 +46,9 @@ class pconlinePgScraper(pgScraper):
         mName = self.find_between(htmlContent, start, end)
         start= '  target="_blank">'
         end = ''
-        mName = self.find_between(mName, start, end)        
+        mName = self.find_between(mName, start, end)  
+        if mName is None :
+            raise ItemsNotFoundError()      
         mName = self.washPathStr(mName)
         pkgDir = (self.rootDir + mName)
         if not os.path.isdir(pkgDir):
@@ -54,7 +58,9 @@ class pconlinePgScraper(pgScraper):
 
         start= '<meta itemprop="name" content="【'
         end = '】" />'
-        pGroupName = self.find_between(htmlContent, start, end)
+        pGroupName = self.find_between(htmlContent, start, end) 
+        if pGroupName is None :
+            raise ItemsNotFoundError()      
         pGroupName = self.washPathStr(pGroupName)
         pkgDir = (pkgDir + "/" + pGroupName)
         if not os.path.isdir(pkgDir):

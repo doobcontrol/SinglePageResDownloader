@@ -26,6 +26,11 @@ msgstr "下载文件失败"
 msgid "File {fileName} downloaded successfully"
 msgstr "文件 {fileName} 下载成功"
 
+#: c:\python\repos\singlepageresdownloader\pagescraper.py:13
+msgid ""
+"Some items are not found in the page HTML string. Please try the url again"
+msgstr "查找下载内容失败，请重试此 URL"
+
 #: c:\python\repos\singlepageresdownloader\xypagescraper.py:34
 msgid "Start downloading cycle ..."
 msgstr "开始下载循环 ……"

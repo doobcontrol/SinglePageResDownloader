@@ -1,4 +1,4 @@
-from pageScraper import pgScraper, WrongUrlException
+from pageScraper import pgScraper, WrongUrlException, ItemsNotFoundError
 import os
 import json
 
@@ -21,6 +21,8 @@ class fengniaoPgScraper(pgScraper):
         start= "eval('('+'"
         end = "'+')');"
         jStr = self.find_between(htmlContent, start, end)   
+        if jStr is None :
+            raise ItemsNotFoundError()      
         json_object = json.loads(jStr)
 
         picList = {}
@@ -33,10 +35,12 @@ class fengniaoPgScraper(pgScraper):
     def createSavePath(self, htmlContent):
         # use page title for directory name
         dirMsg = _('directory {pkgDir} created')
-
+        
         start= 'title="" class="name" target="_blank">'
         end = '</a>'
-        mName = self.find_between(htmlContent, start, end)   
+        mName = self.find_between(htmlContent, start, end)    
+        if mName is None :
+            raise ItemsNotFoundError()       
         mName = self.washPathStr(mName)
         pkgDir = (self.rootDir + mName)
         if not os.path.isdir(pkgDir):
@@ -45,7 +49,9 @@ class fengniaoPgScraper(pgScraper):
             
         start= "<title>"
         end = "</title>"
-        pGroupName = self.find_between(htmlContent, start, end)
+        pGroupName = self.find_between(htmlContent, start, end)  
+        if pGroupName is None :
+            raise ItemsNotFoundError()       
         pGroupName = self.washPathStr(pGroupName)
         pkgDir = (pkgDir + "/" + pGroupName)
         if not os.path.isdir(pkgDir):

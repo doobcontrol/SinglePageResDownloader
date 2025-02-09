@@ -2,7 +2,7 @@ import sys
 import os
 import logging
 import gettext
-from pageScraper import WrongUrlException
+from pageScraper import WrongUrlException, ItemsNotFoundError
 
 if sys.platform.startswith('win'):
     if os.getenv('LANG') is None:
@@ -58,6 +58,8 @@ while True :
                 scraper.downloadPics(pUrl)
             except WrongUrlException as e:
                 print(str(e))
+            except ItemsNotFoundError as e:
+                print(str(e.message))
             except Exception as e:
                 print(str(e))
                 logger.error(
