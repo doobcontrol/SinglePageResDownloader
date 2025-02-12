@@ -1,5 +1,5 @@
 import unittest
-from src.xyPageScraper.pageScraper import pgScraper
+from pageScraper import pgScraper
 
 class TestpgScraper_findIndex_between(unittest.TestCase):
 
