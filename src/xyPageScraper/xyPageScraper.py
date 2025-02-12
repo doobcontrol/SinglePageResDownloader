@@ -37,10 +37,11 @@ logger.info(_('Start downloading cycle ...'))
 while True :
     print(_("[0] pconline"))
     print(_("[1] fengniao"))
+    print(_("[2] xitek"))
     pUrl = input(_('select resource site(or q or x to exit): '))
     if pUrl == 'q' or pUrl == 'x':
         break
-    elif pUrl == '0' or pUrl == '1':
+    elif pUrl in ['0', '1']:
         scraper = None
         if pUrl == '0':
             from pconlinePageScraper import pconlinePgScraper
